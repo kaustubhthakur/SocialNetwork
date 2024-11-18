@@ -9,7 +9,7 @@ const postrouter = require('./routes/posts')
 const userrouter = require('./routes/users')
 const authrouter = require('./routes/auth')
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(cookieparser());
 
 const connection =async()=> {
