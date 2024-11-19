@@ -3,6 +3,7 @@ import HomePage from './pages/homepage/HomePage'
 import {Route,Routes} from "react-router-dom"
 import RegisterPage from './pages/registerpage/RegisterPage'
 import LoginPage from './pages/loginpage/LoginPage'
+import { RecoilRoot } from 'recoil';
 const App = () => {
   return (
     <Routes>
