@@ -69,4 +69,13 @@ const getUsers = async(req,res)=> {
         console.error(error);
     }
 }
-module.exports = {followUnFollowUser,updateUser,getUsers}
+const getUser = async(req,res)=> 
+{
+    try {
+        const user = await User.findById(req.params.id);
+        res.status(201).json(user);
+    } catch (error) {
+        console.error(error)
+    }
+}
+module.exports = {followUnFollowUser,getUser ,updateUser,getUsers}
