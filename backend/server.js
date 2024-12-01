@@ -4,7 +4,7 @@ const port = 9000;
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config();
-
+const authrouter = require('./routes/auth')
 
 app.use(express.json())
 app.use(cors())
@@ -18,6 +18,9 @@ const connection = async()=> {
     }
 }
 connection();
+
+
+app.use('/auth',authrouter)
 app.listen(port,()=> {
     console.log(`server is connected to ${port}...`)
 })
