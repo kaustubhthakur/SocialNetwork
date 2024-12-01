@@ -12,10 +12,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    userId: {
-        type: String,
-        required: true,
-    },
     posts: {
         type: [String],
         default: [],
