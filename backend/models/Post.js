@@ -12,14 +12,17 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    userId: {
-        type: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
-    votes: {
-        type: [String],
-        default: [],
-    },
+    votes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
 }, {
     timestamps: true,
 })
