@@ -1,5 +1,13 @@
-
-
+const Post = require('../models/Post');
+const createPost = async(req,res)=> {
+    try {
+        const newpost = new Post(req.body);
+        const savepost= await newpost.save();
+		res.status(201).json(savepost);
+    } catch (error) {
+        console.error(error)
+    }
+}
 const likeUnlikePost = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -11,29 +19,22 @@ const likeUnlikePost = async (req, res) => {
 			return res.status(404).json({ error: "Post not found" });
 		}
 
-		const userLikedPost = post.likes.includes(userId);
+		const userLikedPost = post.votes.includes(userId);
 
 		if (userLikedPost) {
-			// Unlike post
-			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+			await Post.updateOne({ _id: postId }, { $pull: { votes: userId } });
 			await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
 
-			const updatedLikes = post.likes.filter((id) => id.toString() !== userId.toString());
+			const updatedLikes = post.votes.filter((id) => id.toString() !== userId.toString());
 			res.status(200).json(updatedLikes);
 		} else {
-			// Like post
-			post.likes.push(userId);
+			
+			post.votes.push(userId);
 			await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
 			await post.save();
 
-			const notification = new Notification({
-				from: userId,
-				to: post.user,
-				type: "like",
-			});
-			await notification.save();
 
-			const updatedLikes = post.likes;
+			const updatedLikes = post.votes;
 			res.status(200).json(updatedLikes);
 		}
 	} catch (error) {
@@ -41,3 +42,4 @@ const likeUnlikePost = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+module.exports = {createPost,likeUnlikePost}
