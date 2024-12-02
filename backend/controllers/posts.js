@@ -2,16 +2,16 @@ const Post = require('../models/Post');
 const User = require('../models/User')
 const createPost = async (req, res) => {
 	try {
-		const { title, image, description, user } = req.body;
-		const userId = await User.findById(user);
-		if (!userId) {
+		const { title, image, description, userId } = req.body;
+		const user = await User.findById(userId);
+		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
 
-		if (userId._id.toString() !== req.user._id.toString()) {
+		if (user._id.toString() !== req.user._id.toString()) {
 			return res.status(401).json({ error: "Unauthorized to create post" });
 		}
-		const newPost = new Post({ title, image, description, user });
+		const newPost = new Post({ title, image, description, userId });
 		const savepost = await newPost.save();
 		res.status(201).json(savepost);
 	} catch (error) {

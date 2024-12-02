@@ -4,12 +4,13 @@ const port = 9000;
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config();
+const cookieparser = require('cookie-parser')
 const authrouter = require('./routes/auth')
 const userrouter = require('./routes/users')
 const postrouter = require('./routes/posts')
 app.use(express.json())
 app.use(cors())
-
+app.use(cookieparser());
 const connection = async()=> {
     try {
         await mongoose.connect(process.env.MONGODB);
