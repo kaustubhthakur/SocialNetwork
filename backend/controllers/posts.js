@@ -1,12 +1,22 @@
 const Post = require('../models/Post');
-const createPost = async(req,res)=> {
-    try {
-        const newpost = new Post(req.body);
-        const savepost= await newpost.save();
+const User = require('../models/User')
+const createPost = async (req, res) => {
+	try {
+		const { title, image, description, user } = req.body;
+		const userId = await User.findById(user);
+		if (!userId) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		if (userId._id.toString() !== req.user._id.toString()) {
+			return res.status(401).json({ error: "Unauthorized to create post" });
+		}
+		const newPost = new Post({ title, image, description, user });
+		const savepost = await newPost.save();
 		res.status(201).json(savepost);
-    } catch (error) {
-        console.error(error)
-    }
+	} catch (error) {
+		console.error(error)
+	}
 }
 const likeUnlikePost = async (req, res) => {
 	try {
@@ -28,7 +38,7 @@ const likeUnlikePost = async (req, res) => {
 			const updatedLikes = post.votes.filter((id) => id.toString() !== userId.toString());
 			res.status(200).json(updatedLikes);
 		} else {
-			
+
 			post.votes.push(userId);
 			await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
 			await post.save();
@@ -42,7 +52,7 @@ const likeUnlikePost = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-const getPosts = async (req,res) => {
+const getPosts = async (req, res) => {
 	try {
 		const posts = await Post.find();
 		res.status(201).json(posts);
@@ -50,7 +60,7 @@ const getPosts = async (req,res) => {
 		console.error(error);
 	}
 }
-const getPost = async (req,res) => {
+const getPost = async (req, res) => {
 	try {
 		const post = await Post.findById(req.params.id);
 		res.status(201).json(post);
@@ -58,4 +68,4 @@ const getPost = async (req,res) => {
 		console.error(error);
 	}
 }
-module.exports = {createPost,likeUnlikePost,getPost,getPosts}
+module.exports = { createPost, likeUnlikePost, getPost, getPosts }
