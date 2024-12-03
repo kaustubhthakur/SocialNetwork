@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import authScreenAtom from "../atoms/authAtom";
-import useShowToast from "../hooks/useShowToast";
-import userAtom from "../atoms/userAtom";
+import authScreenAtom from "../../atoms/authAtom";
+import useShowToast from "../../hooks/useShowToast";
+import userAtom from "../../atoms/userAtom";
 
 export default function LoginPage() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +18,7 @@ export default function LoginPage() {
 	const handleLogin = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("/api/users/login", {
+			const res = await fetch("http://localhost:9000/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -32,6 +32,8 @@ export default function LoginPage() {
 			}
 			localStorage.setItem("user-threads", JSON.stringify(data));
 			setUser(data);
+            alert("login success")
+            console.log(data)
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {
