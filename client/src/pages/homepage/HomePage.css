@@ -1,0 +1,22 @@
+/* HomePage.css */
+.homepage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .navbar-container {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for the main content, if you want to add other components later */
+  .main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
